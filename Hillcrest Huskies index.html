@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Hillcrest Huskies - Road to Nationals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #000;
+            color: #fff;
+        }
+
+        /* Premium Background with Depth */
+        .background {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-layer-1 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at top, #1a6b47, #0a4028);
+            animation: bgShift 15s ease-in-out infinite;
+        }
+
+        .bg-layer-2 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(144, 238, 144, 0.15), transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.1), transparent 40%);
+            animation: bgShift 12s ease-in-out infinite reverse;
+        }
+
+        .stadium-lights {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
+            opacity: 0.3;
+            animation: lightsFlicker 3s ease-in-out infinite;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+        }
+
+        @keyframes lightsFlicker {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.5; }
+        }
+
+        .crowd {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 25%;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            padding: 0 10px;
+        }
+
+        .cheerleader-silhouette {
+            width: 40px;
+            height: 80px;
+            background: linear-gradient(135deg, #90EE90, #32CD32);
+            clip-path: polygon(30% 0%, 70% 0%, 80% 50%, 80% 100%, 60% 100%, 50% 65%, 40% 100%, 20% 100%, 20% 50%);
+            animation: cheer 1s ease-in-out infinite;
+            opacity: 0.6;
+            filter: blur(1px);
+        }
+
+        .cheerleader-silhouette:nth-child(odd) { animation-delay: 0.3s; }
+        .cheerleader-silhouette:nth-child(even) { animation-delay: 0.6s; }
+
+        @keyframes cheer {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Game Container */
+        .game-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Premium Header */
+        .header {
+            padding: 15px 20px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 70%, transparent 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        .team-info h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6em;
+            font-weight: 400;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #90EE90, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(144, 238, 144, 0.5));
+        }
+
+        .motto {
+            font-size: 0.7em;
+            color: #FFD700;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
+
+        .score-display {
+            text-align: right;
+        }
+
+        .score {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2em;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 4px 8px rgba(0,0,0,0.6);
+            transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .combo {
+            font-size: 0.85em;
+            font-weight: 900;
+            color: #FF69B4;
+            text-shadow: 0 0 15px rgba(255, 105, 180, 0.8);
+            letter-spacing: 1px;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Welcome Screen - Premium Design */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 25px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 6em;
+            margin-bottom: 20px;
+            animation: logoFloat 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.8));
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-20px) rotate(3deg); }
+        }
+
+        .welcome-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.8em;
+            font-weight: 400;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #90EE90 0%, #FFD700 50%, #90EE90 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 12px rgba(144, 238, 144, 0.4));
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+        }
+
+        .welcome-subtitle {
+            font-size: 1.1em;
+            color: #FFD700;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Level Roadmap Preview */
+        .roadmap-preview {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(26, 107, 71, 0.3));
+            border: 2px solid rgba(144, 238, 144, 0.3);
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin: 25px 0;
+            max-width: 450px;
+            backdrop-filter: blur(10px);
+        }
+
+        .roadmap-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4em;
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .roadmap-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid rgba(144, 238, 144, 0.5);
+        }
+
+        .roadmap-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8em;
+            color: #90EE90;
+            margin-right: 15px;
+            min-width: 35px;
+        }
+
+        .roadmap-info {
+            flex: 1;
+        }
+
+        .roadmap-name {
+            font-weight: 700;
+            color: #fff;
+            font-size: 0.95em;
+        }
+
+        .roadmap-venue {
+            font-size: 0.75em;
+            color: #aaa;
+            margin-top: 2px;
+        }
+
+        .coach-intro {
+            background: linear-gradient(135deg, rgba(144, 238, 144, 0.15), rgba(50, 205, 50, 0.15));
+            border: 2px solid rgba(144, 238, 144, 0.4);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 25px 0;
+            max-width: 450px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .coach-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-weight: 400;
+            color: #FFD700;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .coach-intro p {
+            color: #fff;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+        }
+
+        .btn-massive {
+            background: linear-gradient(135deg, #90EE90, #32CD32);
+            color: #000;
+            border: none;
+            padding: 22px 50px;
+            font-size: 1.3em;
+            font-weight: 900;
+            border-radius: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 
+                0 10px 40px rgba(144, 238, 144, 0.5),
+                0 0 60px rgba(144, 238, 144, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -6px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: btnPulse 2.5s ease-in-out infinite;
+            margin-top: 30px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        @keyframes btnPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 40px rgba(144, 238, 144, 0.5), 0 0 60px rgba(144, 238, 144, 0.3); }
+            50% { transform: scale(1.03); box-shadow: 0 15px 50px rgba(144, 238, 144, 0.7), 0 0 80px rgba(144, 238, 144, 0.5); }
+        }
+
+        .btn-massive:active {
+            transform: scale(0.97);
+        }
+
+        .sound-indicator {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #90EE90;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .sound-wave {
+            width: 4px;
+            height: 22px;
+            background: #90EE90;
+            border-radius: 2px;
+            display: inline-block;
+            animation: wave 0.6s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(144, 238, 144, 0.6);
+        }
+
+        .sound-wave:nth-child(1) { animation-delay: 0s; }
+        .sound-wave:nth-child(2) { animation-delay: 0.1s; }
+        .sound-wave:nth-child(3) { animation-delay: 0.2s; }
+
+        @keyframes wave {
+            0%, 100% { height: 22px; }
+            50% { height: 12px; }
+        }
+
+        /* Game Screen - HD Quality */
+        .game-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+        }
+
+        .level-header {
+            background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(26, 107, 71, 0.4));
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 12px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(144, 238, 144, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .level-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6em;
+            font-weight: 400;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.6));
+        }
+
+        .level-subtitle {
+            font-size: 0.85em;
+            color: #90EE90;
+            margin-top: 6px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .level-progress-bar {
+            margin-top: 12px;
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .progress-dot.completed {
+            background: #90EE90;
+            box-shadow: 0 0 12px rgba(144, 238, 144, 0.8);
+        }
+
+        .progress-dot.current {
+            background: #FFD700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+            transform: scale(1.4);
+        }
+
+        .stars {
+            margin-top: 10px;
+            font-size: 1.4em;
+        }
+
+        /* Premium Rhythm Track */
+        .rhythm-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .rhythm-track {
+            position: relative;
+            flex: 1;
+            background: 
+                linear-gradient(to bottom, 
+                    rgba(26, 107, 71, 0.15) 0%,
+                    rgba(26, 107, 71, 0.35) 50%,
+                    rgba(26, 107, 71, 0.6) 100%
+                ),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="4" height="4" fill="%23000"/><circle cx="2" cy="2" r="0.5" fill="%23fff" opacity="0.1"/></svg>');
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            margin-bottom: 12px;
+            box-shadow: 
+                inset 0 6px 25px rgba(0, 0, 0, 0.4),
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .lane {
+            flex: 1;
+            position: relative;
+            border-right: 2px solid rgba(144, 238, 144, 0.15);
+        }
+
+        .lane:last-child {
+            border-right: none;
+        }
+
+        .hit-zone {
+            position: absolute;
+            bottom: 75px;
+            left: 5%;
+            right: 5%;
+            height: 85px;
+            background: linear-gradient(to bottom, 
+                transparent,
+                rgba(144, 238, 144, 0.15),
+                rgba(144, 238, 144, 0.4)
+            );
+            border: 3px solid #90EE90;
+            border-radius: 16px;
+            box-shadow: 
+                0 0 35px rgba(144, 238, 144, 0.5),
+                inset 0 0 25px rgba(144, 238, 144, 0.2),
+                0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: hitZonePulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes hitZonePulse {
+            0%, 100% { 
+                box-shadow: 0 0 35px rgba(144, 238, 144, 0.5), inset 0 0 25px rgba(144, 238, 144, 0.2), 0 4px 15px rgba(0, 0, 0, 0.3);
+                border-color: #90EE90;
+            }
+            50% { 
+                box-shadow: 0 0 50px rgba(144, 238, 144, 0.8), inset 0 0 35px rgba(144, 238, 144, 0.4), 0 4px 15px rgba(0, 0, 0, 0.3);
+                border-color: #7FFF00;
+            }
+        }
+
+        /* Premium Note Design */
+        .note {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 72%;
+            height: 58px;
+            background: 
+                linear-gradient(135deg, #FF69B4 0%, #FF1493 100%),
+                radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.4), transparent 50%);
+            background-blend-mode: normal, overlay;
+            border-radius: 50%;
+            border: 4px solid #FFD700;
+            box-shadow: 
+                0 6px 20px rgba(255, 105, 180, 0.7),
+                0 0 35px rgba(255, 105, 180, 0.4),
+                inset 0 3px 12px rgba(255, 255, 255, 0.3),
+                inset 0 -3px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7em;
+            animation: notefall linear;
+            filter: drop-shadow(0 4px 12px rgba(255, 105, 180, 0.6));
+        }
+
+        @keyframes notefall {
+            from { top: -70px; }
+            to { top: calc(100% + 70px); }
+        }
+
+        .note.hold {
+            height: 145px;
+            border-radius: 29px;
+            background: 
+                linear-gradient(135deg, #9370DB 0%, #6C5CE7 100%),
+                radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.4), transparent 50%);
+            background-blend-mode: normal, overlay;
+            box-shadow: 
+                0 6px 20px rgba(147, 112, 219, 0.8),
+                0 0 40px rgba(147, 112, 219, 0.5),
+                inset 0 3px 12px rgba(255, 255, 255, 0.3),
+                inset 0 -3px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .note.hold::after {
+            content: 'HOLD';
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.5em;
+            color: #FFD700;
+            font-weight: 900;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+            letter-spacing: 2px;
+        }
+
+        /* Premium Tap Buttons */
+        .tap-buttons {
+            display: flex;
+            gap: 7px;
+            padding: 12px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.85));
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .tap-btn {
+            flex: 1;
+            height: 90px;
+            background: 
+                linear-gradient(135deg, rgba(144, 238, 144, 0.3), rgba(50, 205, 50, 0.3)),
+                radial-gradient(ellipse at top, rgba(255, 255, 255, 0.2), transparent);
+            background-blend-mode: normal, overlay;
+            border: 3px solid #90EE90;
+            border-radius: 18px;
+            font-size: 1.9em;
+            color: #fff;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 6px 20px rgba(144, 238, 144, 0.3),
+                inset 0 3px 10px rgba(255, 255, 255, 0.2),
+                inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tap-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .tap-btn:hover::before {
+            left: 100%;
+        }
+
+        .tap-btn:active {
+            background: 
+                linear-gradient(135deg, #90EE90, #32CD32),
+                radial-gradient(ellipse at center, rgba(255, 255, 255, 0.3), transparent);
+            background-blend-mode: normal, overlay;
+            transform: scale(0.93);
+            box-shadow: 
+                0 0 45px rgba(144, 238, 144, 0.9),
+                inset 0 3px 10px rgba(0, 0, 0, 0.3),
+                inset 0 -3px 8px rgba(255, 255, 255, 0.2);
+        }
+
+        .tap-btn.hit {
+            animation: btnFlash 0.3s;
+        }
+
+        @keyframes btnFlash {
+            0%, 100% { 
+                background: linear-gradient(135deg, rgba(144, 238, 144, 0.3), rgba(50, 205, 50, 0.3));
+            }
+            50% { 
+                background: linear-gradient(135deg, #90EE90, #32CD32);
+                transform: scale(0.96);
+                box-shadow: 0 0 50px rgba(144, 238, 144, 1);
+            }
+        }
+
+        /* Premium Feedback */
+        .feedback {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4em;
+            font-weight: 400;
+            letter-spacing: 3px;
+            pointer-events: none;
+            z-index: 100;
+            animation: feedbackPop 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            text-shadow: 0 6px 25px currentColor;
+        }
+
+        @keyframes feedbackPop {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-90deg); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.4) rotate(5deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(0) rotate(90deg); opacity: 0; }
+        }
+
+        .feedback.perfect { color: #32CD32; }
+        .feedback.good { color: #FFD700; }
+        .feedback.miss { color: #FF6B6B; }
+
+        /* Particle System */
+        .particle {
+            position: fixed;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        @keyframes particleBurst {
+            to {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Results Screen */
+        .results-screen {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .results-card {
+            background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(26, 107, 71, 0.3));
+            border: 3px solid rgba(255, 215, 0, 0.5);
+            border-radius: 28px;
+            padding: 32px 28px;
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .results-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2em;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.6));
+        }
+
+        .stars-display {
+            text-align: center;
+            font-size: 3.5em;
+            margin: 25px 0;
+            animation: starsReveal 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+        }
+
+        @keyframes starsReveal {
+            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+            70% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        .judge-panel {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin: 30px 0;
+        }
+
+        .judge {
+            background: linear-gradient(135deg, rgba(144, 238, 144, 0.15), rgba(50, 205, 50, 0.15));
+            border: 2px solid rgba(144, 238, 144, 0.4);
+            border-radius: 18px;
+            padding: 18px 12px;
+            min-width: 75px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .judge-icon {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+        }
+
+        .judge-score {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.6em;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #FFD700;
+            animation: scoreFlip 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes scoreFlip {
+            0% { transform: rotateY(90deg); opacity: 0; }
+            100% { transform: rotateY(0); opacity: 1; }
+        }
+
+        .average-display {
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #90EE90;
+            margin: 20px 0;
+            text-shadow: 0 0 15px rgba(144, 238, 144, 0.6);
+        }
+
+        .leaderboard {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 18px;
+            padding: 22px;
+            margin: 22px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(144, 238, 144, 0.2);
+        }
+
+        .leaderboard h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            text-align: center;
+            color: #FFD700;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            flex-direction: column;
+            padding: 14px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .leaderboard-item.highlight {
+            background: linear-gradient(135deg, rgba(144, 238, 144, 0.25), rgba(50, 205, 50, 0.25));
+            border-left: 4px solid #90EE90;
+            box-shadow: 0 0 30px rgba(144, 238, 144, 0.5);
+            animation: highlightPulse 2.5s infinite;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(144, 238, 144, 0.5); }
+            50% { box-shadow: 0 0 45px rgba(144, 238, 144, 0.8); }
+        }
+
+        .leaderboard-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .school-name {
+            font-weight: 700;
+            color: #fff;
+            font-size: 1.05em;
+        }
+
+        .rank-change {
+            font-size: 1.3em;
+            margin-left: 10px;
+            font-weight: 900;
+        }
+
+        .leaderboard-scores {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.9em;
+        }
+
+        .week-score {
+            color: #90EE90;
+            font-weight: 600;
+        }
+
+        .total-score {
+            color: #FFD700;
+            font-weight: 900;
+            font-size: 1.15em;
+        }
+
+        .coach-feedback {
+            background: linear-gradient(135deg, rgba(144, 238, 144, 0.15), rgba(50, 205, 50, 0.15));
+            border-left: 5px solid #FFD700;
+            padding: 22px;
+            border-radius: 14px;
+            margin: 22px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .coach-feedback p {
+            color: #fff;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            background: linear-gradient(135deg, #90EE90, #32CD32);
+            color: #000;
+            border: none;
+            padding: 18px;
+            font-size: 1.05em;
+            font-weight: 800;
+            border-radius: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 
+                0 6px 20px rgba(144, 238, 144, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -4px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-retry {
+            background: linear-gradient(135deg, #FF6B6B, #EE5A6F);
+            box-shadow: 
+                0 6px 20px rgba(255, 107, 107, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -4px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* Victory Screen */
+        .victory-screen {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .trophy {
+            font-size: 7em;
+            margin: 25px 0;
+            animation: trophySpin 5s ease-in-out infinite;
+            filter: drop-shadow(0 0 50px rgba(255, 215, 0, 0.9));
+        }
+
+        @keyframes trophySpin {
+            0%, 100% { transform: rotateY(0deg) scale(1); }
+            50% { transform: rotateY(180deg) scale(1.1); }
+        }
+
+        .victory-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3em;
+            font-weight: 400;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 25px;
+            animation: victoryShine 3s ease-in-out infinite;
+        }
+
+        @keyframes victoryShine {
+            0%, 100% { background-position: 0% center; transform: scale(1); }
+            50% { background-position: 100% center; transform: scale(1.05); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 0 12px currentColor;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Move Unlock Overlay */
+        .move-unlock {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.96);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s;
+            backdrop-filter: blur(20px);
+        }
+
+        .move-unlock.active {
+            display: flex;
+        }
+
+        .move-icon {
+            font-size: 9em;
+            margin: 35px 0;
+            animation: moveReveal 1.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.8));
+        }
+
+        @keyframes moveReveal {
+            0% { transform: scale(0) rotate(-360deg); opacity: 0; }
+            70% { transform: scale(1.2) rotate(15deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        .move-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3em;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 18px;
+            text-shadow: 0 0 35px rgba(255, 215, 0, 0.9);
+        }
+
+        .move-description {
+            font-size: 1.2em;
+            color: #90EE90;
+            text-align: center;
+            margin-bottom: 45px;
+            max-width: 350px;
+            line-height: 1.6;
+        }
+
+        /* Screen Shake */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-12px); }
+            40% { transform: translateX(12px); }
+            60% { transform: translateX(-8px); }
+            80% { transform: translateX(8px); }
+        }
+
+        .shake {
+            animation: shake 0.4s;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 600px) {
+            .header { padding: 12px 15px; }
+            .team-info h1 { font-size: 1.4em; }
+            .score { font-size: 1.9em; }
+            .tap-btn { height: 80px; font-size: 1.7em; }
+            .note { height: 52px; font-size: 1.5em; }
+            .feedback { font-size: 3.2em; }
+            .roadmap-preview { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="bg-layer-1"></div>
+        <div class="bg-layer-2"></div>
+        <div class="stadium-lights"></div>
+        <div class="crowd">
+            <div class="cheerleader-silhouette"></div>
+            <div class="cheerleader-silhouette"></div>
+            <div class="cheerleader-silhouette"></div>
+            <div class="cheerleader-silhouette"></div>
+            <div class="cheerleader-silhouette"></div>
+            <div class="cheerleader-silhouette"></div>
+            <div class="cheerleader-silhouette"></div>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div class="header">
+            <div class="team-info">
+                <h1>HILLCREST HUSKIES</h1>
+                <div class="motto">⭐ Our Time is Now ⭐</div>
+            </div>
+            <div class="score-display">
+                <div class="score" id="scoreDisplay">0</div>
+                <div class="combo" id="comboDisplay"></div>
+            </div>
+        </div>
+
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="screen active">
+            <div class="welcome-screen">
+                <div class="logo">🏆</div>
+                <div class="welcome-title">ROAD TO NATIONALS</div>
+                <div class="welcome-subtitle">HILLCREST HUSKIES</div>
+
+                <!-- Roadmap Preview -->
+                <div class="roadmap-preview">
+                    <div class="roadmap-title">🗺️ YOUR JOURNEY</div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-number">1</div>
+                        <div class="roadmap-info">
+                            <div class="roadmap-name">Practice Round</div>
+                            <div class="roadmap-venue">School Gym</div>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-number">2</div>
+                        <div class="roadmap-info">
+                            <div class="roadmap-name">Region Qualifier</div>
+                            <div class="roadmap-venue">Local Arena</div>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-number">3</div>
+                        <div class="roadmap-info">
+                            <div class="roadmap-name">Region Finals</div>
+                            <div class="roadmap-venue">Regional Championship</div>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-number">4</div>
+                        <div class="roadmap-info">
+                            <div class="roadmap-name">State Quarterfinals</div>
+                            <div class="roadmap-venue">State Tournament</div>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-number">5</div>
+                        <div class="roadmap-info">
+                            <div class="roadmap-name">State Semifinals</div>
+                            <div class="roadmap-venue">Final Four</div>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-number">6</div>
+                        <div class="roadmap-info">
+                            <div class="roadmap-name">State Finals</div>
+                            <div class="roadmap-venue">State Championship</div>
+                        </div>
+                    </div>
+                    <div class="roadmap-item" style="border-left-color: #FFD700;">
+                        <div class="roadmap-number" style="color: #FFD700;">7</div>
+                        <div class="roadmap-info">
+                            <div class="roadmap-name" style="color: #FFD700;">NATIONALS</div>
+                            <div class="roadmap-venue">California Championship Stage</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coach-intro">
+                    <div class="coach-name">👩‍🏫 COACH ANNYKA</div>
+                    <p><strong>"Welcome to the squad!"</strong></p>
+                    <p>This is OUR year. Seven competitions stand between us and the National Championship. Tap the buttons in perfect rhythm. Build combos. Unlock elite moves.</p>
+                    <p style="color: #FFD700; font-weight: 700; margin-top: 15px;">"Our Time is NOW! Let's make history! 💚"</p>
+                </div>
+
+                <button class="btn-massive" onclick="enableSoundAndStart()">
+                    🔊 START GAME & ENABLE SOUND
+                </button>
+
+                <div class="sound-indicator" id="soundIndicator">
+                    <span class="sound-wave"></span>
+                    <span class="sound-wave"></span>
+                    <span class="sound-wave"></span>
+                    <span style="margin-left: 5px;">Sound Enabled!</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <div class="game-screen">
+                <div class="level-header">
+                    <div class="level-title" id="levelTitle">Practice Round</div>
+                    <div class="level-subtitle" id="levelSubtitle">School Gym</div>
+                    <div class="level-progress-bar" id="levelProgressBar"></div>
+                    <div class="stars" id="levelStars">⭐⭐⭐</div>
+                </div>
+
+                <div class="rhythm-container">
+                    <div class="rhythm-track" id="rhythmTrack">
+                        <div class="lane" data-lane="0"><div class="hit-zone"></div></div>
+                        <div class="lane" data-lane="1"><div class="hit-zone"></div></div>
+                        <div class="lane" data-lane="2"><div class="hit-zone"></div></div>
+                        <div class="lane" data-lane="3"><div class="hit-zone"></div></div>
+                        <div class="lane" data-lane="4"><div class="hit-zone"></div></div>
+                    </div>
+
+                    <div class="tap-buttons">
+                        <div class="tap-btn" data-lane="0">🎀</div>
+                        <div class="tap-btn" data-lane="1">⭐</div>
+                        <div class="tap-btn" data-lane="2">💚</div>
+                        <div class="tap-btn" data-lane="3">🎵</div>
+                        <div class="tap-btn" data-lane="4">🏅</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="screen">
+            <div class="results-screen">
+                <div class="results-card">
+                    <div class="results-title" id="resultsTitle">LEVEL COMPLETE!</div>
+                    
+                    <div class="stars-display" id="starsEarned">⭐⭐⭐</div>
+
+                    <div class="judge-panel">
+                        <div class="judge">
+                            <div class="judge-icon">👨‍⚖️</div>
+                            <div class="judge-score" id="judge1">-</div>
+                        </div>
+                        <div class="judge">
+                            <div class="judge-icon">👩‍⚖️</div>
+                            <div class="judge-score" id="judge2">-</div>
+                        </div>
+                        <div class="judge">
+                            <div class="judge-icon">👨‍⚖️</div>
+                            <div class="judge-score" id="judge3">-</div>
+                        </div>
+                    </div>
+
+                    <div class="average-display">Average: <span id="avgScore">-</span></div>
+
+                    <div class="leaderboard">
+                        <h3>🏆 UTAH DIVISION STANDINGS</h3>
+                        <div id="leaderboardList"></div>
+                    </div>
+
+                    <div class="coach-feedback">
+                        <div class="coach-name" style="margin-bottom: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2em; letter-spacing: 1px;">👩‍🏫 COACH ANNYKA</div>
+                        <div id="coachFeedback"></div>
+                    </div>
+
+                    <div class="btn-container">
+                        <button class="btn btn-retry" onclick="retryLevel()" id="retryBtn">↺ RETRY</button>
+                        <button class="btn" onclick="nextLevel()" id="nextBtn">CONTINUE →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Victory Screen -->
+        <div id="victoryScreen" class="screen">
+            <div class="victory-screen">
+                <div class="results-card" style="text-align: center;">
+                    <div class="trophy">🏆</div>
+                    <div class="victory-title">NATIONAL CHAMPIONS!</div>
+                    <p style="font-size: 1.6em; color: #FFD700; margin: 25px 0; font-weight: 800;">THE HILLCREST HUSKIES DID IT!</p>
+
+                    <div class="coach-feedback">
+                        <div class="coach-name" style="margin-bottom: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2em; letter-spacing: 1px;">👩‍🏫 COACH ANNYKA</div>
+                        <p><strong>"I am SO PROUD of each one of you!"</strong></p>
+                        <p>"We came to California with a dream, and you made it a reality. This championship belongs to every single one of you!"</p>
+                        <p style="margin-top: 18px; color: #FFD700; font-weight: 700;">"Our Time Was NOW! Forever a Huskie! 💚💛"</p>
+                    </div>
+
+                    <button class="btn" onclick="location.reload()" style="margin-top: 35px; width: 100%;">🔄 PLAY AGAIN</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Move Unlock Overlay -->
+    <div class="move-unlock" id="moveUnlock">
+        <div style="text-align: center; padding: 20px;">
+            <div style="font-family: 'Bebas Neue', sans-serif; font-size: 2.2em; color: #90EE90; font-weight: 400; letter-spacing: 3px; margin-bottom: 25px;">NEW MOVE UNLOCKED!</div>
+            <div class="move-icon" id="moveIcon">🎀</div>
+            <div class="move-name" id="moveName">Liberty</div>
+            <div class="move-description" id="moveDesc">Single-leg stunt - Foundation of elite cheerleading</div>
+            <button class="btn" onclick="closeMoveUnlock()" style="margin-top: 35px; padding: 20px 55px;">CONTINUE! ✨</button>
+        </div>
+    </div>
+
+    <script>
+        // GAME STATE
+        let audioContext;
+        let soundEnabled = false;
+        let currentLevel = 0;
+        let score = 0;
+        let combo = 0;
+        let maxCombo = 0;
+        let perfect = 0;
+        let good = 0;
+        let miss = 0;
+        let notes = [];
+        let gameActive = false;
+        let cumulativeScores = {};
+        let previousRankings = [];
+        let activeHolds = {};
+        let levelStars = [];
+
+        const levels = [
+            { name: "Practice Round", subtitle: "School Gym - Learn the Basics", notes: 25, speed: 2200, passing: 60, stars3: 95, stars2: 80, pattern: 'basic', musicKey: 'C' },
+            { name: "Region Qualifier", subtitle: "Local Arena - Show Your Skills", notes: 35, speed: 1900, passing: 70, stars3: 95, stars2: 82, pattern: 'doubles', musicKey: 'G' },
+            { name: "Region Finals", subtitle: "Regional Championship", notes: 50, speed: 1700, passing: 75, stars3: 95, stars2: 85, pattern: 'holds', musicKey: 'D' },
+            { name: "State Quarterfinals", subtitle: "State Tournament - Elite Competition", notes: 65, speed: 1500, passing: 80, stars3: 96, stars2: 87, pattern: 'mixed', musicKey: 'A' },
+            { name: "State Semifinals", subtitle: "Final Four - Intensity Rises", notes: 80, speed: 1350, passing: 85, stars3: 97, stars2: 90, pattern: 'complex', musicKey: 'E' },
+            { name: "State Finals", subtitle: "State Championship - Everything On The Line", notes: 95, speed: 1200, passing: 88, stars3: 97, stars2: 92, pattern: 'intense', musicKey: 'B' },
+            { name: "NATIONALS", subtitle: "California - National Championship Stage", notes: 120, speed: 1100, passing: 92, stars3: 98, stars2: 94, pattern: 'brutal', musicKey: 'F#' }
+        ];
+
+        const schools = [
+            { name: "Lone Peak Knights", baseScore: 88.5 },
+            { name: "Corner Canyon Chargers", baseScore: 87.2 },
+            { name: "Skyridge Falcons", baseScore: 85.8 },
+            { name: "Pleasant Grove Vikings", baseScore: 84.3 },
+            { name: "Timpview Thunderbirds", baseScore: 83.1 },
+            { name: "Hillcrest Huskies", baseScore: 85.0, isPlayer: true },
+            { name: "Mountain Ridge Sentinels", baseScore: 81.7 }
+        ];
+
+        const moveUnlocks = {
+            0: [{ name: "High V", icon: "🙌", desc: "Classic arm motion - Foundation of all cheers" }],
+            1: [{ name: "Liberty", icon: "🦅", desc: "Single-leg stunt - Shows balance and control" }],
+            2: [{ name: "Toe Touch", icon: "✨", desc: "Jump with legs in perfect split - Crowd favorite!" }],
+            3: [{ name: "Heel Stretch", icon: "🌟", desc: "Advanced flexibility stunt - Elite level" }],
+            4: [{ name: "Basket Toss", icon: "🚀", desc: "High-flying team stunt - Maximum height!" }],
+            5: [{ name: "Scorpion", icon: "🦂", desc: "Signature flexibility move - Requires intense training" }],
+            6: [{ name: "Championship Pyramid", icon: "🏔️", desc: "3-level elite formation - The ultimate!" }]
+        };
+
+        // Musical scales for different feel each level
+        const musicScales = {
+            'C': [262, 294, 330, 349, 392, 440, 494], // C major - bright
+            'G': [392, 440, 494, 523, 587, 659, 740], // G major - energetic
+            'D': [294, 330, 370, 392, 440, 494, 554], // D major - powerful
+            'A': [440, 494, 554, 587, 659, 740, 831], // A major - intense
+            'E': [330, 370, 415, 440, 494, 554, 622], // E major - dramatic
+            'B': [494, 554, 622, 659, 740, 831, 932], // B major - epic
+            'F#': [370, 415, 466, 494, 554, 622, 699]  // F# major - climactic
+        };
+
+        // Initialize cumulative scores
+        schools.forEach(school => {
+            cumulativeScores[school.name] = 0;
+        });
+
+        // AUDIO SYSTEM - ENHANCED
+        function enableSoundAndStart() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            soundEnabled = true;
+            playPerfect();
+            document.getElementById('soundIndicator').style.display = 'flex';
+
+            setTimeout(() => {
+                switchScreen('welcomeScreen', 'gameScreen');
+                loadLevel();
+            }, 1200);
+        }
+
+        function playTone(frequency, duration, type = 'sine', volume = 0.15) {
+            if (!audioContext || !soundEnabled) return;
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.frequency.value = frequency;
+            osc.type = type;
+            gain.gain.setValueAtTime(volume, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            osc.start(audioContext.currentTime);
+            osc.stop(audioContext.currentTime + duration);
+        }
+
+        function playPerfect() {
+            if (!audioContext || !soundEnabled) return;
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.frequency.setValueAtTime(900, audioContext.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1500, audioContext.currentTime + 0.15);
+            osc.type = 'sine';
+            gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+            
+            osc.start(audioContext.currentTime);
+            osc.stop(audioContext.currentTime + 0.15);
+        }
+
+        function playGood() {
+            playTone(700, 0.12, 'sine', 0.15);
+        }
+
+        function playMiss() {
+            if (!audioContext || !soundEnabled) return;
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.frequency.setValueAtTime(300, audioContext.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.28);
+            osc.type = 'sawtooth';
+            gain.gain.setValueAtTime(0.12, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.28);
+            
+            osc.start(audioContext.currentTime);
+            osc.stop(audioContext.currentTime + 0.28);
+        }
+
+        function playCrowdCheer() {
+            if (!audioContext || !soundEnabled) return;
+            
+            const bufferSize = audioContext.sampleRate * 0.6;
+            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = (Math.random() * 2 - 1) * 0.08;
+            }
+            
+            const noise = audioContext.createBufferSource();
+            const filter = audioContext.createBiquadFilter();
+            const gain = audioContext.createGain();
+            
+            noise.buffer = buffer;
+            filter.type = 'bandpass';
+            filter.frequency.value = 1200;
+            
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            gain.gain.setValueAtTime(0, audioContext.currentTime);
+            gain.gain.linearRampToValueAtTime(0.25, audioContext.currentTime + 0.12);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
+            
+            noise.start(audioContext.currentTime);
+            noise.stop(audioContext.currentTime + 0.6);
+        }
+
+        function playMusic() {
+            if (!audioContext || !soundEnabled || !gameActive) return;
+            
+            const level = levels[currentLevel];
+            const scale = musicScales[level.musicKey];
+            const tempo = 520 - (currentLevel * 35);
+            
+            let beatIndex = 0;
+            
+            const playBeat = () => {
+                if (!gameActive) return;
+                
+                const noteIndex = beatIndex % scale.length;
+                playTone(scale[noteIndex], 0.35, 'sine', 0.05);
+                
+                if (beatIndex % 4 === 0) {
+                    playTone(82, 0.18, 'sine', 0.08);
+                }
+                
+                if (beatIndex % 8 === 4) {
+                    playTone(165, 0.15, 'triangle', 0.04);
+                }
+                
+                beatIndex++;
+                setTimeout(playBeat, tempo);
+            };
+            
+            playBeat();
+        }
+
+        // GAME LOGIC
+        function loadLevel() {
+            const level = levels[currentLevel];
+            document.getElementById('levelTitle').textContent = level.name;
+            document.getElementById('levelSubtitle').textContent = level.subtitle;
+            
+            updateProgressBar();
+            
+            score = 0;
+            combo = 0;
+            perfect = 0;
+            good = 0;
+            miss = 0;
+            notes = [];
+            activeHolds = {};
+            
+            updateScore();
+            generateNotes(level.notes, level.speed);
+            
+            setTimeout(() => {
+                gameActive = true;
+                startNotes();
+                playMusic();
+            }, 2200);
+        }
+
+        function updateProgressBar() {
+            const bar = document.getElementById('levelProgressBar');
+            bar.innerHTML = '';
+            
+            for (let i = 0; i < levels.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                if (i < currentLevel) dot.classList.add('completed');
+                if (i === currentLevel) dot.classList.add('current');
+                bar.appendChild(dot);
+            }
+        }
+
+        function generateNotes(count, speed) {
+            const level = levels[currentLevel];
+            const interval = 620;
+            let time = 0;
+            let notesCreated = 0;
+            
+            while (notesCreated < count) {
+                let pattern;
+                const rand = Math.random();
+                
+                if (level.pattern === 'basic') {
+                    pattern = rand > 0.75 ? 
+                        [Math.floor(Math.random() * 5), Math.floor(Math.random() * 5)] : 
+                        [Math.floor(Math.random() * 5)];
+                } else if (level.pattern === 'doubles') {
+                    if (rand > 0.8) pattern = [0, 2, 4];
+                    else if (rand > 0.45) pattern = [Math.floor(Math.random() * 4), Math.floor(Math.random() * 4) + 1];
+                    else pattern = [Math.floor(Math.random() * 5)];
+                } else if (level.pattern === 'holds') {
+                    if (rand > 0.7) pattern = [{ lane: Math.floor(Math.random() * 5), hold: true }];
+                    else if (rand > 0.4) pattern = [Math.floor(Math.random() * 4), Math.floor(Math.random() * 4) + 1];
+                    else pattern = [Math.floor(Math.random() * 5)];
+                } else if (level.pattern === 'mixed') {
+                    if (rand > 0.77) pattern = [{ lane: Math.floor(Math.random() * 5), hold: true }];
+                    else if (rand > 0.52) pattern = [0, 2, 4];
+                    else if (rand > 0.32) pattern = [Math.floor(Math.random() * 3), Math.floor(Math.random() * 2) + 3];
+                    else pattern = [Math.floor(Math.random() * 5)];
+                } else if (level.pattern === 'complex') {
+                    if (rand > 0.68) pattern = [{ lane: Math.floor(Math.random() * 5), hold: true }];
+                    else if (rand > 0.52) pattern = [0, 1, 2];
+                    else if (rand > 0.32) pattern = [2, 3, 4];
+                    else pattern = [Math.floor(Math.random() * 4), Math.floor(Math.random() * 4) + 1];
+                } else if (level.pattern === 'intense') {
+                    if (rand > 0.63) pattern = [{ lane: Math.floor(Math.random() * 5), hold: true }];
+                    else if (rand > 0.42) pattern = [0, 2, 4];
+                    else pattern = [1, 2, 3];
+                } else {
+                    if (rand > 0.72) pattern = [{ lane: 0, hold: true }, { lane: 4, hold: true }];
+                    else if (rand > 0.52) pattern = [0, 1, 2, 3, 4];
+                    else if (rand > 0.32) pattern = [{ lane: Math.floor(Math.random() * 5), hold: true }];
+                    else pattern = [0, 2, 4];
+                }
+                
+                pattern.forEach(item => {
+                    if (typeof item === 'object') {
+                        notes.push({
+                            lane: item.lane,
+                            time: time,
+                            speed: speed,
+                            hit: false,
+                            element: null,
+                            hold: true,
+                            holding: false
+                        });
+                    } else {
+                        notes.push({
+                            lane: item,
+                            time: time,
+                            speed: speed,
+                            hit: false,
+                            element: null,
+                            hold: false
+                        });
+                    }
+                    notesCreated++;
+                });
+                
+                time += interval;
+            }
+        }
+
+        function startNotes() {
+            notes.forEach((note) => {
+                setTimeout(() => {
+                    if (!gameActive) return;
+                    createNoteElement(note);
+                }, note.time);
+            });
+
+            setTimeout(() => {
+                endLevel();
+            }, notes[notes.length - 1].time + notes[notes.length - 1].speed + 1200);
+        }
+
+        function createNoteElement(note) {
+            const lane = document.querySelector(`.lane[data-lane="${note.lane}"]`);
+            const noteEl = document.createElement('div');
+            noteEl.className = 'note';
+            if (note.hold) noteEl.classList.add('hold');
+            noteEl.textContent = ['🎀', '⭐', '💚', '🎵', '🏅'][note.lane];
+            noteEl.style.animationDuration = note.speed + 'ms';
+            
+            note.element = noteEl;
+            lane.appendChild(noteEl);
+            
+            setTimeout(() => {
+                if (!note.hit && noteEl.parentElement) {
+                    noteEl.remove();
+                    if (!note.hold || !note.holding) {
+                        handleMiss();
+                    }
+                }
+            }, note.speed);
+        }
+
+        // TAP HANDLING
+        document.querySelectorAll('.tap-btn').forEach(btn => {
+            const lane = parseInt(btn.dataset.lane);
+            
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                handleTapStart(lane, btn);
+            });
+            
+            btn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                handleTapEnd(lane, btn);
+            });
+            
+            btn.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                handleTapStart(lane, btn);
+            });
+            
+            btn.addEventListener('mouseup', (e) => {
+                e.preventDefault();
+                handleTapEnd(lane, btn);
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            const keys = ['1', '2', '3', '4', '5'];
+            const index = keys.indexOf(e.key);
+            if (index !== -1 && !e.repeat) {
+                const button = document.querySelector(`.tap-btn[data-lane="${index}"]`);
+                handleTapStart(index, button);
+            }
+        });
+        
+        document.addEventListener('keyup', (e) => {
+            const keys = ['1', '2', '3', '4', '5'];
+            const index = keys.indexOf(e.key);
+            if (index !== -1) {
+                const button = document.querySelector(`.tap-btn[data-lane="${index}"]`);
+                handleTapEnd(index, button);
+            }
+        });
+
+        function handleTapStart(lane, button) {
+            if (!gameActive) return;
+            
+            button.classList.add('hit');
+            
+            if (navigator.vibrate) {
+                navigator.vibrate(12);
+            }
+            
+            const laneNotes = notes.filter(n => n.lane === lane && !n.hit && n.element && n.element.parentElement);
+            
+            if (laneNotes.length === 0) {
+                handleMiss();
+                return;
+            }
+            
+            const closestNote = laneNotes.reduce((closest, note) => {
+                const rect = note.element.getBoundingClientRect();
+                const hitZone = note.element.parentElement.querySelector('.hit-zone').getBoundingClientRect();
+                const distance = Math.abs(rect.top + rect.height / 2 - hitZone.top - hitZone.height / 2);
+                
+                if (!closest || distance < closest.distance) {
+                    return { note, distance };
+                }
+                return closest;
+            }, null);
+            
+            const { note, distance } = closestNote;
+            
+            if (note.hold) {
+                if (distance < 75) {
+                    note.holding = true;
+                    activeHolds[lane] = note;
+                    playPerfect();
+                    showFeedback('HOLD!', 'perfect');
+                } else {
+                    handleMiss();
+                }
+            } else {
+                if (distance < 48) {
+                    handlePerfect(note);
+                } else if (distance < 95) {
+                    handleGood(note);
+                } else {
+                    handleMiss();
+                }
+            }
+        }
+
+        function handleTapEnd(lane, button) {
+            setTimeout(() => button.classList.remove('hit'), 120);
+            
+            if (activeHolds[lane]) {
+                const note = activeHolds[lane];
+                note.hit = true;
+                if (note.element) note.element.remove();
+                
+                perfect++;
+                combo++;
+                maxCombo = Math.max(maxCombo, combo);
+                score += 150 * Math.min(combo, 10);
+                
+                playPerfect();
+                showFeedback('PERFECT HOLD!', 'perfect');
+                updateScore();
+                
+                if (navigator.vibrate) {
+                    navigator.vibrate(18);
+                }
+                
+                delete activeHolds[lane];
+            }
+        }
+
+        function handlePerfect(note) {
+            note.hit = true;
+            note.element.remove();
+            perfect++;
+            combo++;
+            maxCombo = Math.max(maxCombo, combo);
+            score += 100 * Math.min(combo, 10);
+            
+            playPerfect();
+            createParticleBurst(note.element);
+            showFeedback('PERFECT!', 'perfect');
+            updateScore();
+            
+            if (navigator.vibrate) {
+                navigator.vibrate(12);
+            }
+            
+            if (combo === 10) {
+                showFeedback('ON FIRE! 🔥', 'perfect');
+                playCrowdCheer();
+            } else if (combo === 20) {
+                showFeedback('UNSTOPPABLE! ⚡', 'perfect');
+                playCrowdCheer();
+            } else if (combo === 50) {
+                showFeedback('LEGENDARY! 🌟', 'perfect');
+                playCrowdCheer();
+                screenShake();
+            }
+        }
+
+        function handleGood(note) {
+            note.hit = true;
+            note.element.remove();
+            good++;
+            combo++;
+            maxCombo = Math.max(maxCombo, combo);
+            score += 50 * Math.min(combo, 10);
+            
+            playGood();
+            showFeedback('GOOD!', 'good');
+            updateScore();
+            
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+        }
+
+        function handleMiss() {
+            miss++;
+            combo = 0;
+            
+            playMiss();
+            showFeedback('MISS!', 'miss');
+            updateScore();
+            
+            if (navigator.vibrate) {
+                navigator.vibrate([0, 25, 12, 25]);
+            }
+        }
+
+        function showFeedback(text, type) {
+            const feedback = document.createElement('div');
+            feedback.className = `feedback ${type}`;
+            feedback.textContent = text;
+            document.getElementById('rhythmTrack').appendChild(feedback);
+            setTimeout(() => feedback.remove(), 900);
+        }
+
+        function updateScore() {
+            const scoreEl = document.getElementById('scoreDisplay');
+            scoreEl.textContent = score;
+            scoreEl.style.transform = 'scale(1.18)';
+            setTimeout(() => {
+                scoreEl.style.transform = 'scale(1)';
+            }, 180);
+            
+            if (combo > 1) {
+                document.getElementById('comboDisplay').textContent = `${combo}x COMBO!`;
+            } else {
+                document.getElementById('comboDisplay').textContent = '';
+            }
+        }
+
+        function createParticleBurst(element) {
+            const rect = element.getBoundingClientRect();
+            const colors = ['#90EE90', '#FFD700', '#FF69B4', '#9370DB'];
+            
+            for (let i = 0; i < 14; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = rect.left + rect.width / 2 + 'px';
+                particle.style.top = rect.top + rect.height / 2 + 'px';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = (i / 14) * Math.PI * 2;
+                const distance = 65 + Math.random() * 45;
+                particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                particle.style.animation = 'particleBurst 0.9s ease-out forwards';
+                
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 900);
+            }
+        }
+
+        function screenShake() {
+            document.getElementById('rhythmTrack').classList.add('shake');
+            setTimeout(() => {
+                document.getElementById('rhythmTrack').classList.remove('shake');
+            }, 400);
+        }
+
+        function endLevel() {
+            gameActive = false;
+            
+            const totalNotes = perfect + good + miss;
+            const accuracy = totalNotes > 0 ? ((perfect + good) / totalNotes) * 100 : 0;
+            
+            let starsEarned = 1;
+            if (accuracy >= levels[currentLevel].stars3) starsEarned = 3;
+            else if (accuracy >= levels[currentLevel].stars2) starsEarned = 2;
+            
+            levelStars[currentLevel] = starsEarned;
+            
+            const baseScore = 7.5 + (accuracy / 100) * 2.5;
+            const variation = 0.28;
+            const scores = [
+                (baseScore + (Math.random() * variation - variation/2)).toFixed(1),
+                (baseScore + (Math.random() * variation - variation/2)).toFixed(1),
+                (baseScore + (Math.random() * variation - variation/2)).toFixed(1)
+            ];
+            
+            const weekScore = parseFloat(((parseFloat(scores[0]) + parseFloat(scores[1]) + parseFloat(scores[2])) / 3).toFixed(1));
+            
+            previousRankings = schools.map(s => ({
+                name: s.name,
+                rank: schools.filter(sch => (cumulativeScores[sch.name] || 0) > (cumulativeScores[s.name] || 0)).length + 1
+            }));
+            
+            schools.forEach(school => {
+                if (school.isPlayer) {
+                    cumulativeScores[school.name] = (cumulativeScores[school.name] || 0) + weekScore;
+                    school.weekScore = weekScore.toFixed(1);
+                } else {
+                    const skillFactor = (school.baseScore - 81.7) / (88.5 - 81.7);
+                    const otherWeekScore = 7.5 + (skillFactor * 2.5) + (Math.random() * 0.75 - 0.375);
+                    cumulativeScores[school.name] = (cumulativeScores[school.name] || 0) + otherWeekScore;
+                    school.weekScore = otherWeekScore.toFixed(1);
+                }
+                school.totalScore = cumulativeScores[school.name].toFixed(1);
+            });
+            
+            setTimeout(() => {
+                if (moveUnlocks[currentLevel]) {
+                    showMoveUnlock(moveUnlocks[currentLevel][0], () => {
+                        switchScreen('gameScreen', 'resultsScreen');
+                        showResults(scores, weekScore, accuracy, starsEarned);
+                    });
+                } else {
+                    switchScreen('gameScreen', 'resultsScreen');
+                    showResults(scores, weekScore, accuracy, starsEarned);
+                }
+            }, 1200);
+        }
+
+        function showMoveUnlock(move, callback) {
+            document.getElementById('moveIcon').textContent = move.icon;
+            document.getElementById('moveName').textContent = move.name;
+            document.getElementById('moveDesc').textContent = move.desc;
+            document.getElementById('moveUnlock').classList.add('active');
+            
+            playCrowdCheer();
+            
+            window.moveUnlockCallback = callback;
+        }
+
+        function closeMoveUnlock() {
+            document.getElementById('moveUnlock').classList.remove('active');
+            if (window.moveUnlockCallback) {
+                window.moveUnlockCallback();
+                window.moveUnlockCallback = null;
+            }
+        }
+
+        function showResults(scores, weekScore, accuracy, starsEarned) {
+            document.getElementById('judge1').textContent = scores[0];
+            document.getElementById('judge2').textContent = scores[1];
+            document.getElementById('judge3').textContent = scores[2];
+            document.getElementById('avgScore').textContent = weekScore;
+            
+            const starDisplay = '⭐'.repeat(starsEarned) + '☆'.repeat(3 - starsEarned);
+            document.getElementById('starsEarned').textContent = starDisplay;
+            
+            const sortedSchools = [...schools].sort((a, b) => parseFloat(b.totalScore) - parseFloat(a.totalScore));
+            
+            const leaderboard = document.getElementById('leaderboardList');
+            leaderboard.innerHTML = '';
+            
+            sortedSchools.forEach((school, index) => {
+                const item = document.createElement('div');
+                item.className = 'leaderboard-item';
+                if (school.isPlayer) item.classList.add('highlight');
+                
+                const prevRank = previousRankings.find(r => r.name === school.name)?.rank || index + 1;
+                const rankChange = prevRank - (index + 1);
+                let rankIcon = '';
+                if (rankChange > 0) rankIcon = `<span class="rank-change" style="color: #32CD32;">↑${rankChange}</span>`;
+                else if (rankChange < 0) rankIcon = `<span class="rank-change" style="color: #FF6B6B;">↓${Math.abs(rankChange)}</span>`;
+                
+                item.innerHTML = `
+                    <div class="leaderboard-row">
+                        <span class="school-name">${index + 1}. ${school.name}${rankIcon}</span>
+                    </div>
+                    <div class="leaderboard-scores">
+                        <span class="week-score">Week ${currentLevel + 1}: ${school.weekScore}</span>
+                        <span class="total-score">Total: ${school.totalScore}</span>
+                    </div>
+                `;
+                leaderboard.appendChild(item);
+            });
+            
+            const passing = levels[currentLevel].passing;
+            const feedback = document.getElementById('coachFeedback');
+            const playerRank = sortedSchools.findIndex(s => s.isPlayer) + 1;
+            
+            if (accuracy >= passing) {
+                let msg = '';
+                if (starsEarned === 3) {
+                    msg = `<p><strong>"PERFECT PERFORMANCE! Three stars!"</strong></p>`;
+                } else if (starsEarned === 2) {
+                    msg = `<p><strong>"Great job! Two stars!"</strong></p>`;
+                } else {
+                    msg = `<p><strong>"We passed, but we can do better!"</strong></p>`;
+                }
+                
+                if (playerRank === 1) {
+                    msg += `<p>We're in FIRST place! This is exactly the energy we need!</p>`;
+                } else if (playerRank <= 3) {
+                    msg += `<p>We're in ${playerRank}${playerRank === 2 ? 'nd' : 'rd'} place! We're right in the mix!</p>`;
+                } else {
+                    msg += `<p>We're in ${playerRank}th place. Let's climb that leaderboard!</p>`;
+                }
+                
+                feedback.innerHTML = msg;
+                document.getElementById('retryBtn').style.display = 'none';
+                document.getElementById('nextBtn').style.display = 'block';
+            } else {
+                feedback.innerHTML = `<p><strong>"We need to do better."</strong></p><p>You need ${passing}% accuracy to advance. Let's try again!</p>`;
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('retryBtn').style.display = 'block';
+            }
+            
+            if (currentLevel === 6 && accuracy >= passing && playerRank === 1) {
+                setTimeout(() => {
+                    createConfetti();
+                    playCrowdCheer();
+                    switchScreen('resultsScreen', 'victoryScreen');
+                }, 3500);
+            }
+        }
+
+        function retryLevel() {
+            switchScreen('resultsScreen', 'gameScreen');
+            loadLevel();
+        }
+
+        function nextLevel() {
+            currentLevel++;
+            switchScreen('resultsScreen', 'gameScreen');
+            loadLevel();
+        }
+
+        function switchScreen(from, to) {
+            document.getElementById(from).classList.remove('active');
+            document.getElementById(to).classList.add('active');
+        }
+
+        function createConfetti() {
+            const colors = ['#90EE90', '#FFD700', '#FF69B4', '#9370DB', '#FF6347'];
+            for (let i = 0; i < 120; i++) {
+                setTimeout(() => {
+                    const c = document.createElement('div');
+                    c.className = 'confetti';
+                    c.style.left = Math.random() * 100 + 'vw';
+                    c.style.top = '-25px';
+                    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    c.style.animation = `confettiFall ${2.5 + Math.random() * 2}s linear forwards`;
+                    document.body.appendChild(c);
+                    setTimeout(() => c.remove(), 4500);
+                }, i * 35);
+            }
+        }
+    </script>
+</body>
+</html>
